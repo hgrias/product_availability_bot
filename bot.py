@@ -60,9 +60,10 @@ except:
     logging.error("Shutting down program.")
     sys.exit(1)
 
-# If the case is not in stock, wait and re-run the loop in a minute
+# If the case is not in stock, log the info and end
 if not inStock:
-    logging.info("Item is still out of stock. Will check again in 1 minute")
+    logging.info("Item is still out of stock. Will check again in 2 minutes")
+    sys.exit(0)
 # If the case is in stock, send me an email right away and end the program
 else:
     # message to be sent

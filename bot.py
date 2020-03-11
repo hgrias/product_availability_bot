@@ -8,9 +8,19 @@ import sys
 import time
 import logging
 
+# Setting up logging information to save to separate file
+logging.basicConfig(
+    filename='bot_logs.log',
+    level=logging.DEBUG,
+    format='%(asctime)s | %(levelname)s | %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+)
+
+logging.info("Script has started running.")
+
 # creates SMTP session
 server = smtplib.SMTP('smtp.gmail.com', 587)
-print("Email Server Started.")
+logging.info("Email Server Started.")
 # start TLS for security
 server.starttls()
 # Authentication
@@ -39,20 +49,20 @@ try:
             inStock = True
 # Handle errors due to not finding the Add to Cart button
 except:
-    print("There was an finding the Add to Cart button. Please advise.")
+    logging.error("There was an error finding the Add to Cart button.")
     subject = "BOT ERROR: CAN'T FIND ADD TO CART BUTTON"
     body = "FIX ASAP"
     message = 'Subject: {}\n\n{}'.format(subject, body)
     server.sendmail(sender_email, receiver_email, message)
-    print("Error Email Sent.")
-    print("Shutting Down the Email Server.")
+    logging.error("Error Email Sent.")
+    logging.error("Shutting Down the Email Server.")
     server.quit()
-    print("Shutting down program.")
+    logging.error("Shutting down program.")
     sys.exit(1)
 
 # If the case is not in stock, wait and re-run the loop in a minute
 if not inStock:
-    print("Item is still out of stock. Will check again in 1 minute")
+    logging.info("Item is still out of stock. Will check again in 1 minute")
 # If the case is in stock, send me an email right away and end the program
 else:
     # message to be sent
@@ -61,9 +71,9 @@ else:
     message = 'Subject: {}\n\n{}'.format(subject, body)
     # sending the mail
     server.sendmail(sender_email, receiver_email, message)
-    print("Email Sent.")
+    logging.info("Case is in stock. Notification email Sent.")
     # terminating the session
     server.quit()
-    print("Email Server Shutting Down.")
-    print("Exiting Program Successfully.")
+    logging.info("Email Server Shutting Down.")
+    logging.info("Exiting Program Successfully.")
     sys.exit(0)

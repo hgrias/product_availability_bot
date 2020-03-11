@@ -10,7 +10,7 @@ import logging
 
 # Setting up logging information to save to separate file
 logging.basicConfig(
-    filename='bot_logs.log',
+    filename='/home/ec2-user/python_bot/bot_logs.log',
     level=logging.DEBUG,
     format='%(asctime)s | %(levelname)s | %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
